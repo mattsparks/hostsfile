@@ -1,0 +1,153 @@
+#!/bin/bash
+
+HOSTS_FILE="/etc/hosts"
+IP_ADDRESS=""
+DOMAIN=""
+
+fileExists() {
+    if [ -e "$1" ]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+if fileExists HOSTS_FILE; then
+    while getopts ":h" opt; do
+        case ${opt} in
+            h )
+                echo ""
+                echo "Useage:"
+                echo "     hostsfile  add               Add a domain to your hosts file."
+                echo "     hostsfile  remove            Remove a domain from your hosts file."
+                echo "     hostsfile  pause             Pause a domain in your hosts file."
+                echo "     hostsfile  resume            Resume a paused domain."
+                echo "     hostsfile  -h                Display this help message."
+                echo ""
+                ;;
+            \? )
+                echo "Invalid Option: -$OPTARG" 1>&2
+                exit 1
+                ;;
+        esac
+    done
+    shift $((OPTIND -1))
+
+    subcommand=$1
+    shift
+
+    case "$subcommand" in
+        add)
+            while getopts ":h" opt; do
+                case ${opt} in
+                    h )
+                        echo ""
+                        echo "Useage:"
+                        echo "     hostsfile  add  [ip address]  [domain]"
+                        echo ""
+                        exit 1
+                        ;;
+                    \? )
+                        echo "Invalid Option: -$OPTARG" 1>&2
+                        exit 1
+                        ;;
+                esac
+            done
+            shift $((OPTIND -1))
+
+            IP_ADDRESS=$1
+            shift
+            DOMAIN=$1
+
+            echo "$IP_ADDRESS          $DOMAIN" >> $HOSTS_FILE
+            echo "$DOMAIN added to hosts file!"
+            ;;
+        remove)
+            while getopts ":h" opt; do
+                case ${opt} in
+                    h )
+                        echo ""
+                        echo "Useage:"
+                        echo "     hostsfile  remove  [domain]"
+                        echo ""
+                        exit 1
+                        ;;
+                    \? )
+                        echo "Invalid Option: -$OPTARG" 1>&2
+                        exit 1
+                        ;;
+                esac
+            done
+            shift $((OPTIND -1))
+
+            DOMAIN=$1
+            shift
+
+            lineNum="$(grep -n "$DOMAIN" $HOSTS_FILE | head -n 1 | cut -d: -f1)"
+            replace=$(sed -e "${lineNum}d" $HOSTS_FILE)
+
+             > $HOSTS_FILE
+             echo "$replace" >> $HOSTS_FILE
+             echo "$DOMAIN removed from hosts file!"
+            ;;
+        pause)
+            while getopts ":h" opt; do
+                case ${opt} in
+                    h )
+                        echo ""
+                        echo "Useage:"
+                        echo "     hostsfile  pause  [domain]"
+                        echo ""
+                        exit 1
+                        ;;
+                    \? )
+                        echo "Invalid Option: -$OPTARG" 1>&2
+                        exit 1
+                        ;;
+                esac
+            done
+            shift $((OPTIND -1))
+
+            DOMAIN=$1
+            shift
+
+            lineNum="$(grep -n "$DOMAIN" $HOSTS_FILE | head -n 1 | cut -d: -f1)"
+            replace=$(sed "s/.*${DOMAIN}/# &/" $HOSTS_FILE)
+
+             > $HOSTS_FILE
+             echo "$replace" >> $HOSTS_FILE
+             echo "$DOMAIN paused!"
+            ;;
+        resume)
+            while getopts ":h" opt; do
+                case ${opt} in
+                    h )
+                        echo ""
+                        echo "Useage:"
+                        echo "     hostsfile  resume  [domain]"
+                        echo ""
+                        exit 1
+                        ;;
+                    \? )
+                        echo "Invalid Option: -$OPTARG" 1>&2
+                        exit 1
+                        ;;
+                esac
+            done
+            shift $((OPTIND -1))
+
+            DOMAIN=$1
+            shift
+
+            lineNum="$(grep -n "$DOMAIN" $HOSTS_FILE | head -n 1 | cut -d: -f1)"
+            replace=$(sed "$lineNum s/^# //" $HOSTS_FILE)
+
+             > $HOSTS_FILE
+             echo "$replace" >> $HOSTS_FILE
+             echo "$DOMAIN resumed!"
+            ;;
+    esac
+else
+    echo "Hosts File Not Found"
+    exit 0
+fi
