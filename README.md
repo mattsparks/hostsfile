@@ -5,6 +5,7 @@ Want to add a domain to your hosts file? Easy!
 
 ```shell
 sudo hostsfile add 127.0.0.1 example.com
+
 example.com added to hosts file!
 ```
 
@@ -12,6 +13,7 @@ Change your mind? You always were unpredictable!
 
 ```shell
 sudo hostsfile remove example.com
+
 example.com removed from hosts file!
 ```
 
@@ -19,6 +21,7 @@ Maybe you'd like only to pause your addition...
 
 ```shell
 sudo hostsfile pause example.com
+
 example.com paused!
 ```
 
@@ -26,6 +29,7 @@ But wait! Let's let it live again!
 
 ```shell
 sudo hostsfile resume example.com
+
 example.com resumed!
 ```
 
