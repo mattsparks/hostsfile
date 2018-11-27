@@ -17,7 +17,7 @@ if fileExists HOSTS_FILE; then
         case ${opt} in
             h )
                 echo ""
-                echo "Useage:"
+                echo "Usage:"
                 echo "     hostsfile  add               Add a domain to your hosts file."
                 echo "     hostsfile  remove            Remove a domain from your hosts file."
                 echo "     hostsfile  pause             Pause a domain in your hosts file."
@@ -42,7 +42,7 @@ if fileExists HOSTS_FILE; then
                 case ${opt} in
                     h )
                         echo ""
-                        echo "Useage:"
+                        echo "Usage:"
                         echo "     hostsfile  add  [ip address]  [domain]"
                         echo ""
                         exit 1
@@ -67,7 +67,7 @@ if fileExists HOSTS_FILE; then
                 case ${opt} in
                     h )
                         echo ""
-                        echo "Useage:"
+                        echo "Usage:"
                         echo "     hostsfile  remove  [domain]"
                         echo ""
                         exit 1
@@ -95,7 +95,7 @@ if fileExists HOSTS_FILE; then
                 case ${opt} in
                     h )
                         echo ""
-                        echo "Useage:"
+                        echo "Usage:"
                         echo "     hostsfile  pause  [domain]"
                         echo ""
                         exit 1
@@ -123,7 +123,7 @@ if fileExists HOSTS_FILE; then
                 case ${opt} in
                     h )
                         echo ""
-                        echo "Useage:"
+                        echo "Usage:"
                         echo "     hostsfile  resume  [domain]"
                         echo ""
                         exit 1
